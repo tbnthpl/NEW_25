@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Doorstep Banking - Reports</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="app-body">
+    <div class="app-layout">
+      <aside class="sidebar" aria-label="Primary navigation">
+        <div class="sidebar-header">
+          <img src="WaveLogo.png" alt="Wave Logo" class="sidebar-logo" />
+          <div>
+            <p class="sidebar-bank">Federal Bank</p>
+            <p class="sidebar-app">Doorstep Banking</p>
+          </div>
+        </div>
+        <nav class="sidebar-nav">
+          <a class="sidebar-link" data-page="dashboard" href="dashboard.html">Dashboard</a>
+          <a class="sidebar-link" data-page="vendor-onboarding" href="vendor-onboarding.html">Vendor Onboarding</a>
+          <a class="sidebar-link" data-page="store-onboarding" href="store-onboarding.html">Store Onboarding</a>
+          <a class="sidebar-link" data-page="mapping" href="mapping.html">Store Mapping</a>
+          <a class="sidebar-link" data-page="finacle-upload" href="finacle-upload.html">Finacle Upload</a>
+          <a class="sidebar-link" data-page="vendor-upload" href="vendor-upload.html">Vendor Upload</a>
+          <a class="sidebar-link" data-page="reconciliation" href="reconciliation.html">Reconciliation</a>
+          <a class="sidebar-link" data-page="reconciliation-results" href="reconciliation-results.html">Daily Reconciliation Results</a>
+          <a class="sidebar-link" data-page="masters" href="masters.html">Master Configuration</a>
+          <a class="sidebar-link" data-page="charges" href="charges.html">Charges</a>
+          <a class="sidebar-link active" data-page="reports" href="reports.html">Reports</a>
+          <a class="sidebar-link" data-page="application-log" href="application-log.html">Application Log</a>
+          <a class="sidebar-link" data-page="approvals" href="approvals.html">Maker-Checker</a>
+          <a class="sidebar-link" data-page="admin-tools" href="admin-tools.html">Admin Tools</a>
+        </nav>
+      </aside>
+      <div class="app-main">
+        <header class="topbar">
+      <div class="brand-row">
+        <img src="FederalLogo.png" alt="Federal Bank Logo" class="brand-logo" />
+        <div class="app-title-wrap">
+          <div class="brand">Doorstep Banking</div>
+          <div class="topbar-subtitle">Federal Bank Internal System</div>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <span class="user-badge" data-user-badge></span>
+        <button class="secondary-btn" data-logout>Logout</button>
+      </div>
+    </header>
+
+    <main class="page page-wide">
+      <section class="recon-card">
+        <h1>Reports</h1>
+        <p class="subtitle">Download operational and audit reports.</p>
+
+        <div class="card-grid">
+          <button class="secondary-btn report-toggle" data-target="vendor-reports">
+            Vendor
+          </button>
+          <button class="secondary-btn report-toggle" data-target="customer-reports">
+            Customer
+          </button>
+          <button class="secondary-btn report-toggle" data-target="recon-reports" data-maker-hide>
+            Reconciliation
+          </button>
+          <button class="secondary-btn report-toggle" data-target="log-reports">Logs</button>
+        </div>
+
+        <div class="report-group hidden" id="vendor-reports">
+          <h3>Vendor Pickup Report</h3>
+          <form id="vendor-report-form" class="inline-form">
+            <label class="field">
+              <span class="label">Vendor</span>
+              <select id="vendor-report-select" required></select>
+            </label>
+            <label class="field">
+              <span class="label">Store</span>
+              <select id="vendor-report-store-select" title="Optional. Limit the report to a single bank store.">
+                <option value="">All stores</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="label">From Date</span>
+              <input type="date" id="vendor-report-from" required />
+            </label>
+            <label class="field">
+              <span class="label">To Date</span>
+              <input type="date" id="vendor-report-to" required />
+            </label>
+            <button class="secondary-btn" type="submit">Download</button>
+            <button class="secondary-btn" type="button" id="vendor-report-preview">
+              Preview
+            </button>
+          </form>
+          <div class="table-wrapper preview" id="vendor-report-preview-table"></div>
+          <div id="vendor-charges-report-block" hidden>
+            <h4 class="section-heading">Vendor Charges Report</h4>
+            <p class="subtitle subtitle-small">Select From Date and To Date above, then preview or download computed vendor charges.</p>
+            <div class="inline-actions mb12">
+              <button class="secondary-btn" type="button" id="vendor-charges-preview">Preview</button>
+              <button class="secondary-btn" data-report="vendor-charges">Download</button>
+            </div>
+            <div class="table-wrapper preview" id="vendor-charges-preview-table"></div>
+          </div>
+          <h4 class="section-heading">Vendor Absence Report</h4>
+          <p class="subtitle subtitle-small">Track cases where the vendor did not perform a scheduled pickup at a store. Finacle (bank) expected a pickup; vendor MIS shows actual pickups. <strong>BEAT</strong> stores only (scheduled route). Dates use each batch’s MIS date, like daily reconciliation-not individual row dates. Requires processed Finacle and vendor MIS for the range.</p>
+          <form id="vendor-absence-form" class="inline-form">
+            <label class="field">
+              <span class="label">Vendor</span>
+              <select id="vendor-absence-select">
+                <option value="">All vendors</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="label">From Date</span>
+              <input type="date" id="vendor-absence-from" required />
+            </label>
+            <label class="field">
+              <span class="label">To Date</span>
+              <input type="date" id="vendor-absence-to" required />
+            </label>
+            <button class="secondary-btn" type="button" id="vendor-absence-detect">Detect & Record</button>
+            <label class="field checkbox-field">
+              <input type="checkbox" id="vendor-absence-use-stored" />
+              <span class="label">Use stored records</span>
+            </label>
+            <button class="secondary-btn" type="button" id="vendor-absence-preview">Preview</button>
+            <button class="secondary-btn" type="button" id="vendor-absence-download">Download Excel</button>
+          </form>
+          <div class="table-wrapper preview" id="vendor-absence-preview-table"></div>
+        </div>
+
+        <div class="report-group hidden" id="customer-reports">
+          <h3>Customer Pickup Report</h3>
+          <form id="customer-report-form" class="inline-form">
+            <label class="field">
+              <span class="label">Customer</span>
+              <select id="customer-report-select" required></select>
+            </label>
+            <label class="field">
+              <span class="label">From Date</span>
+              <input type="date" id="customer-report-from" required />
+            </label>
+            <label class="field">
+              <span class="label">To Date</span>
+              <input type="date" id="customer-report-to" required />
+            </label>
+            <button class="secondary-btn" type="submit">Download</button>
+            <button class="secondary-btn" type="button" id="customer-report-preview">
+              Preview
+            </button>
+          </form>
+          <div class="table-wrapper preview" id="customer-report-preview-table"></div>
+          <h4 class="section-heading">Bank store charges report</h4>
+          <p class="subtitle subtitle-small">Select From Date and To Date above, then preview or download computed bank store charges.</p>
+          <div class="inline-actions mb12">
+            <button class="secondary-btn" type="button" id="customer-charges-preview">Preview</button>
+            <button class="secondary-btn" data-report="customer-charges">Download</button>
+          </div>
+          <div class="table-wrapper preview" id="customer-charges-preview-table"></div>
+        </div>
+
+        <div class="report-group hidden" id="recon-reports">
+          <h3>Final Reconciliation Report</h3>
+          <form id="recon-report-form" class="inline-form">
+            <label class="field">
+              <span class="label">From Date</span>
+              <input type="date" id="recon-report-from" required />
+            </label>
+            <label class="field">
+              <span class="label">To Date</span>
+              <input type="date" id="recon-report-to" required />
+            </label>
+            <button class="secondary-btn" type="submit">Download</button>
+            <button class="secondary-btn" type="button" id="recon-report-preview">
+              Preview
+            </button>
+          </form>
+          <div class="table-wrapper preview" id="recon-report-preview-table"></div>
+          <button class="secondary-btn" data-report="reconciliation-status">
+            Reconciliation Status
+          </button>
+          <button class="secondary-btn" data-report="exception-aging">Exception Aging</button>
+          <button class="secondary-btn" data-report="store-summary">Store-wise Summary</button>
+        </div>
+
+        <div class="report-group hidden" id="log-reports">
+          <a class="secondary-btn" href="application-log.html">View Application Log</a>
+          <button class="secondary-btn" data-report="audit-logs">
+            Download Audit Logs (Excel)
+          </button>
+        </div>
+
+        <p class="form-message" id="report-message"></p>
+      </section>
+        </main>
+      </div>
+    </div>
+
+    <script src="config.js?v=1"></script>
+    <script src="app.js?v=14"></script>
+    <script src="reports.js?v=9"></script>
+  </body>
+</html>

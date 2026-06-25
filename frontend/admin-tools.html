@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Doorstep Banking - Admin Tools</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="app-body">
+    <div class="app-layout">
+      <aside class="sidebar" aria-label="Primary navigation">
+        <div class="sidebar-header">
+          <img src="WaveLogo.png" alt="Wave Logo" class="sidebar-logo" />
+          <div>
+            <p class="sidebar-bank">Federal Bank</p>
+            <p class="sidebar-app">Doorstep Banking</p>
+          </div>
+        </div>
+        <nav class="sidebar-nav">
+          <a class="sidebar-link" data-page="dashboard" href="dashboard.html">Dashboard</a>
+          <a class="sidebar-link" data-page="vendor-onboarding" href="vendor-onboarding.html">Vendor Onboarding</a>
+          <a class="sidebar-link" data-page="store-onboarding" href="store-onboarding.html">Store Onboarding</a>
+          <a class="sidebar-link" data-page="mapping" href="mapping.html">Store Mapping</a>
+          <a class="sidebar-link" data-page="finacle-upload" href="finacle-upload.html">Finacle Upload</a>
+          <a class="sidebar-link" data-page="vendor-upload" href="vendor-upload.html">Vendor Upload</a>
+          <a class="sidebar-link" data-page="reconciliation" href="reconciliation.html">Reconciliation</a>
+          <a class="sidebar-link" data-page="reconciliation-results" href="reconciliation-results.html">Daily Reconciliation Results</a>
+          <a class="sidebar-link" data-page="masters" href="masters.html">Master Configuration</a>
+          <a class="sidebar-link" data-page="charges" href="charges.html">Charges</a>
+          <a class="sidebar-link" data-page="reports" href="reports.html">Reports</a>
+          <a class="sidebar-link" data-page="application-log" href="application-log.html">Application Log</a>
+          <a class="sidebar-link" data-page="approvals" href="approvals.html">Maker-Checker</a>
+          <a class="sidebar-link active" data-page="admin-tools" href="admin-tools.html">Admin Tools</a>
+        </nav>
+      </aside>
+      <div class="app-main">
+        <header class="topbar">
+      <div class="brand-row">
+        <img src="FederalLogo.png" alt="Federal Bank Logo" class="brand-logo" />
+        <div class="app-title-wrap">
+          <div class="brand">Doorstep Banking</div>
+          <div class="topbar-subtitle">Federal Bank Internal System</div>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <span class="user-badge" data-user-badge></span>
+        <button class="secondary-btn" data-logout>Logout</button>
+      </div>
+    </header>
+
+    <main class="page page-wide">
+      <section class="recon-card">
+        <h1>Admin Tools</h1>
+        <p class="subtitle">
+          Dangerous actions. Clear data only when needed for testing. This cannot be undone.
+        </p>
+
+        <form id="admin-reset-all-form" class="card-form admin-reset-card" novalidate>
+          <h3 class="admin-reset-title">Reset All</h3>
+          <p class="subtitle subtitle-small">
+            Clears all application data: uploads, transactions, reconciliation, approvals, vendors, stores, masters, charges, audit logs, month locks. User accounts are preserved. Cannot be undone.
+          </p>
+          <label class="field">
+            <span class="label">Reason</span>
+            <textarea name="reason" rows="2" placeholder="Reason for reset" required></textarea>
+          </label>
+          <label class="field">
+            <span class="label">Type RESET ALL to proceed</span>
+            <input type="text" name="confirm" placeholder="RESET ALL" required />
+          </label>
+          <button type="submit" class="primary-btn admin-reset-btn">Reset All</button>
+          <p class="form-message" id="admin-reset-message"></p>
+        </form>
+
+        <form id="admin-cleanup-form" class="card-form" novalidate>
+          <label class="field">
+            <span class="label">Select data to clear</span>
+            <div class="checkbox-grid">
+              <label><input type="checkbox" name="targets" value="STORE_MAPPING" /> Store Mapping</label>
+              <label><input type="checkbox" name="targets" value="VENDORS_STORES" /> Vendors & Stores</label>
+              <label><input type="checkbox" name="targets" value="MASTERS" /> Master Configs</label>
+              <label><input type="checkbox" name="targets" value="CHARGES" /> Charges (Vendor & Customer)</label>
+              <label><input type="checkbox" name="targets" value="UPLOADS" /> Uploads (Finacle/Vendor)</label>
+              <label><input type="checkbox" name="targets" value="TRANSACTIONS" /> Transactions</label>
+              <label><input type="checkbox" name="targets" value="RECONCILIATION" /> Reconciliation & Exceptions</label>
+              <label><input type="checkbox" name="targets" value="APPROVALS" /> Approvals</label>
+            </div>
+          </label>
+
+          <label class="field">
+            <span class="label">Reason</span>
+            <textarea name="reason" rows="3" placeholder="Reason for cleanup" required></textarea>
+          </label>
+
+          <label class="field">
+            <span class="label">Type CONFIRM to proceed</span>
+            <input type="text" name="confirm" placeholder="CONFIRM" required />
+          </label>
+
+          <button class="primary-btn" type="submit">Clear Selected Data</button>
+          <p class="form-message" id="admin-cleanup-message"></p>
+          <pre class="code-block" id="admin-cleanup-result"></pre>
+        </form>
+
+        <hr class="section-separator" />
+
+        <h2>Finacle File Column Mapping</h2>
+        <p class="subtitle">
+          Map Finacle Excel columns to internal fields. Changes apply to new uploads. Admin only.
+        </p>
+        <form id="finacle-mapping-form" class="card-form card-form-narrow">
+          <div class="mapping-grid" id="finacle-mapping-fields"></div>
+          <div class="button-row mt10">
+            <button type="submit" class="primary-btn">Save Mapping</button>
+            <button type="button" class="secondary-btn" id="finacle-mapping-reset">Reset to Defaults</button>
+          </div>
+          <p class="form-message" id="finacle-mapping-message"></p>
+        </form>
+
+        <hr class="section-separator" />
+
+        <h2>User Management</h2>
+        <p class="subtitle">
+          Grant application access to Bank AD users. Users log in with their AD credentials; roles are assigned here.
+        </p>
+        <form id="user-add-form" class="card-form card-form-narrow">
+          <input type="text" name="employeeId" placeholder="Employee ID (AD username)" required />
+          <input type="text" name="fullName" placeholder="Full Name" required />
+          <select name="roleCode" required>
+            <option value="">Select role</option>
+            <option value="MAKER">MAKER</option>
+            <option value="CHECKER">CHECKER</option>
+            <option value="ADMIN">ADMIN</option>
+            <option value="AUDITOR">AUDITOR</option>
+          </select>
+          <button class="primary-btn" type="submit">Grant Access</button>
+          <p class="form-message" id="user-add-message"></p>
+        </form>
+        <div class="table-wrapper mt20">
+          <table>
+            <thead>
+              <tr>
+                <th>Employee ID</th>
+                <th>Full Name</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Last Login</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="user-list-rows"></tbody>
+          </table>
+        </div>
+        <p class="form-message" id="user-list-message"></p>
+
+        <div class="card-grid mt20">
+          <a class="nav-card" href="masters.html">Charge Configuration (Masters)</a>
+          <a class="nav-card" href="charges.html">Charge Computation</a>
+        </div>
+      </section>
+        </main>
+      </div>
+    </div>
+
+    <script src="config.js?v=1"></script>
+    <script src="app.js?v=14"></script>
+    <script src="admin-tools.js?v=6"></script>
+  </body>
+</html>

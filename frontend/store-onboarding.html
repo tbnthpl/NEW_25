@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Doorstep Banking - Store Onboarding</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="app-body">
+    <div class="app-layout">
+      <aside class="sidebar" aria-label="Primary navigation">
+        <div class="sidebar-header">
+          <img src="WaveLogo.png" alt="Wave Logo" class="sidebar-logo" />
+          <div>
+            <p class="sidebar-bank">Federal Bank</p>
+            <p class="sidebar-app">Doorstep Banking</p>
+          </div>
+        </div>
+        <nav class="sidebar-nav">
+          <a class="sidebar-link" data-page="dashboard" href="dashboard.html">Dashboard</a>
+          <a class="sidebar-link" data-page="vendor-onboarding" href="vendor-onboarding.html">Vendor Onboarding</a>
+          <a class="sidebar-link active" data-page="store-onboarding" href="store-onboarding.html">Store Onboarding</a>
+          <a class="sidebar-link" data-page="mapping" href="mapping.html">Store Mapping</a>
+          <a class="sidebar-link" data-page="finacle-upload" href="finacle-upload.html">Finacle Upload</a>
+          <a class="sidebar-link" data-page="vendor-upload" href="vendor-upload.html">Vendor Upload</a>
+          <a class="sidebar-link" data-page="reconciliation" href="reconciliation.html">Reconciliation</a>
+          <a class="sidebar-link" data-page="reconciliation-results" href="reconciliation-results.html">Daily Reconciliation Results</a>
+          <a class="sidebar-link" data-page="masters" href="masters.html">Master Configuration</a>
+          <a class="sidebar-link" data-page="charges" href="charges.html">Charges</a>
+          <a class="sidebar-link" data-page="reports" href="reports.html">Reports</a>
+          <a class="sidebar-link" data-page="application-log" href="application-log.html">Application Log</a>
+          <a class="sidebar-link" data-page="approvals" href="approvals.html">Maker-Checker</a>
+          <a class="sidebar-link" data-page="admin-tools" href="admin-tools.html">Admin Tools</a>
+        </nav>
+      </aside>
+      <div class="app-main">
+        <header class="topbar">
+      <div class="brand-row">
+        <img src="FederalLogo.png" alt="Federal Bank Logo" class="brand-logo" />
+        <div class="app-title-wrap">
+          <div class="brand">Doorstep Banking</div>
+          <div class="topbar-subtitle">Federal Bank Internal System</div>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <span class="user-badge" data-user-badge></span>
+        <button class="secondary-btn" data-logout>Logout</button>
+      </div>
+    </header>
+
+    <main class="page page-wide">
+      <section class="recon-card">
+        <h1>Store Onboarding</h1>
+        <p class="subtitle">
+          Add and maintain bank store master. Stores must be onboarded before Finacle upload and Store Mapping.
+        </p>
+
+        <div class="bulk-upload-section" data-admin-only hidden>
+          <h3>Bulk Upload (Admin Only)</h3>
+          <p class="subtitle subtitle-small">Upload Excel (.xlsx or .xls) with columns: bank_store_code, effective_from, store_name, pickup_type (BEAT/CALL), customer_id, customer_name, account_no, sol_id. For BEAT: daily_pickup_limit, monthly_bank_charge (or fixed_charge), vendor_charge (₹/month). For CALL: call_included_pickups, call_monthly_bank_charge, call_additional_bank_per_pickup, call_vendor_pay_per_pickup. Optional: waiver_percentage, waiver_cap_amount, waiver_cap_from, waiver_cap_to.</p>
+          <form id="bulk-store-form" class="card-form card-form-inline">
+            <input type="file" id="bulk-store-file" accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" required />
+            <button type="submit" class="primary-btn">Bulk Upload Stores</button>
+            <button type="button" class="secondary-btn" id="bulk-store-download-template">Download template</button>
+          </form>
+          <p class="form-message" id="bulk-store-message"></p>
+        </div>
+
+        <form id="store-form" class="card-form" novalidate data-checker-hide>
+          <input type="hidden" id="editing-store-id" value="" />
+          <label class="field">
+            <span class="label">Bank Store Code</span>
+            <input type="text" name="bankStoreCode" placeholder="Bank store code" required />
+          </label>
+          <label class="field">
+            <span class="label">Store Name</span>
+            <input type="text" name="storeName" placeholder="Store / branch name" />
+          </label>
+          <label class="field">
+            <span class="label">Customer ID</span>
+            <input type="text" name="customerId" placeholder="Customer ID" />
+          </label>
+          <label class="field">
+            <span class="label">Customer Name</span>
+            <input type="text" name="customerName" placeholder="Customer name" />
+          </label>
+          <label class="field">
+            <span class="label">Account No</span>
+            <input type="text" name="accountNo" placeholder="Account number" />
+          </label>
+          <label class="field">
+            <span class="label">Pickup Type</span>
+            <select name="pickupType" id="store-pickup-type">
+              <option value="BEAT">Beat (vendor picks up from each customer location daily)</option>
+              <option value="CALL">Call (on-demand only)</option>
+            </select>
+          </label>
+          <div class="store-beat-pricing" id="store-beat-pricing">
+            <label class="field">
+              <span class="label">Daily pickup limit (₹)</span>
+              <input type="number" name="dailyPickupLimit" step="0.01" min="0" placeholder="Daily pickup limit" />
+            </label>
+            <label class="field">
+              <span class="label">Monthly bank charge (₹)</span>
+              <input type="number" name="monthlyBankCharge" step="0.01" min="0" placeholder="Fixed charge per store per month" />
+            </label>
+            <label class="field">
+              <span class="label">Monthly vendor charge (₹)</span>
+              <input type="number" name="monthlyVendorCharge" step="0.01" min="0" placeholder="Monthly vendor charge (Beat)" />
+            </label>
+          </div>
+          <div class="store-call-pricing" id="store-call-pricing" hidden>
+            <label class="field">
+              <span class="label">CALL - included pickups / month</span>
+              <input type="number" name="callIncludedPickups" step="1" min="0" placeholder="e.g. 8" title="Pickups covered by the monthly package (before per-pickup bank add-on)" />
+            </label>
+            <label class="field">
+              <span class="label">CALL - monthly bank package (₹)</span>
+              <input type="number" name="callMonthlyBankCharge" step="0.01" min="0" placeholder="e.g. 2000" title="Bank charges this for the included pickups each month" />
+            </label>
+            <label class="field">
+              <span class="label">CALL - bank charge per extra pickup (₹)</span>
+              <input type="number" name="callAdditionalBankPerPickup" step="0.01" min="0" placeholder="e.g. 100" title="After included pickups, bank charge per additional CALL pickup" />
+            </label>
+            <label class="field">
+              <span class="label">CALL - vendor pay per pickup (₹)</span>
+              <input type="number" name="callVendorPayPerPickup" step="0.01" min="0" placeholder="e.g. 150" title="Amount bank pays vendor for each CALL pickup this month" />
+            </label>
+          </div>
+          <label class="field">
+            <span class="label">Waiver percentage (optional)</span>
+            <input type="number" name="waiverPercentage" step="0.01" min="0" max="100" placeholder="Waiver percentage" />
+          </label>
+          <label class="field">
+            <span class="label">Waiver cap (₹, optional)</span>
+            <input type="number" name="waiverCapAmount" step="0.01" min="0" placeholder="Waiver cap" />
+          </label>
+          <label class="field">
+            <span class="label">Waiver cap from (optional)</span>
+            <input type="date" name="waiverCapFrom" title="Customer charge month-end must be on or after this date for the cap to apply" />
+          </label>
+          <label class="field">
+            <span class="label">Waiver cap to (optional)</span>
+            <input type="date" name="waiverCapTo" title="Customer charge month-end must be on or before this date for the cap to apply" />
+          </label>
+          <label class="field">
+            <span class="label">Effective From</span>
+            <input type="date" name="effectiveFrom" required />
+          </label>
+          <label class="field">
+            <span class="label">Maker Comment</span>
+            <textarea
+              name="makerComment"
+              rows="3"
+              placeholder="Enter maker comment for checker"
+              required
+            ></textarea>
+          </label>
+          <div class="inline-actions">
+            <button type="submit" class="primary-btn" id="store-submit-btn">Add Store</button>
+            <button type="button" class="secondary-btn" id="store-cancel-edit-btn" hidden>Cancel edit</button>
+          </div>
+          <p class="form-message" id="store-message" role="status" aria-live="polite"></p>
+        </form>
+
+        <div class="store-list-toolbar">
+          <label class="field store-toolbar-field">
+            <input type="text" class="store-search-input" id="store-search" placeholder="Search by store code or name..." aria-label="Search stores" />
+          </label>
+          <label class="field store-toolbar-field">
+            <select id="store-status-filter" aria-label="Store status filter">
+              <option value="">All</option>
+              <option value="ACTIVE">Active</option>
+              <option value="INACTIVE">Inactive</option>
+            </select>
+          </label>
+          <label class="field store-toolbar-field">
+            <select id="store-vendor-filter" aria-label="Filter by vendor">
+              <option value="">All vendors</option>
+            </select>
+          </label>
+          <button type="button" class="icon-btn store-download-btn" id="store-download-btn" title="Download list as Excel" aria-label="Download list as Excel">
+            <span class="store-download-icon" aria-hidden="true">⬇</span>
+          </button>
+        </div>
+
+        <div class="table-wrapper store-list-table-wrap">
+          <table class="store-list-table">
+            <thead>
+              <tr>
+                <th>Bank Store Code</th>
+                <th>Store Name</th>
+                <th>Pickup Type</th>
+                <th>Customer ID</th>
+                <th>Customer Name</th>
+                <th>Account No</th>
+                <th>Daily limit (₹)</th>
+                <th>Monthly bank charge (₹)</th>
+                <th>Monthly vendor charge (₹)</th>
+                <th>CALL incl./mo</th>
+                <th>CALL bank pkg (₹)</th>
+                <th>CALL bank extra (₹)</th>
+                <th>CALL vendor (₹/pu)</th>
+                <th>Waiver %</th>
+                <th>Waiver cap (₹)</th>
+                <th>Cap from</th>
+                <th>Cap to</th>
+                <th>Onboarded</th>
+                <th>Last modified</th>
+                <th>Effective From</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="store-rows"></tbody>
+          </table>
+        </div>
+
+        <div class="approval-modal checker-comment-modal" id="checker-comment-modal" role="dialog" aria-labelledby="checker-comment-modal-title" aria-modal="true" hidden>
+          <div class="approval-modal-backdrop"></div>
+          <div class="approval-modal-content">
+            <div class="approval-modal-header">
+              <h2 id="checker-comment-modal-title">Checker Decision</h2>
+              <button type="button" class="approval-modal-close" aria-label="Close">&times;</button>
+            </div>
+            <div class="approval-modal-body">
+              <dl class="checker-comment-meta">
+                <dt>Decision</dt><dd id="checker-comment-decision"></dd>
+                <dt>Checker</dt><dd id="checker-comment-checker"></dd>
+                <dt>Decided on</dt><dd id="checker-comment-decided-at"></dd>
+                <dt>Maker</dt><dd id="checker-comment-maker"></dd>
+                <dt>Requested on</dt><dd id="checker-comment-created-at"></dd>
+              </dl>
+              <p class="subtitle">Comment</p>
+              <div class="checker-comment-body" id="checker-comment-text"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="approval-modal" id="deactivate-store-modal" role="dialog" aria-labelledby="deactivate-store-modal-title" aria-modal="true" hidden>
+          <div class="approval-modal-backdrop"></div>
+          <div class="approval-modal-content">
+            <div class="approval-modal-header">
+              <h2 id="deactivate-store-modal-title">Request Store Deactivation</h2>
+              <button type="button" class="approval-modal-close" aria-label="Close">&times;</button>
+            </div>
+            <div class="approval-modal-body">
+              <p class="subtitle modal-note">This request will be sent for checker approval.</p>
+              <form id="deactivate-store-form" class="card-form">
+                <input type="hidden" name="deactivateStoreId" id="deactivate-store-id" />
+                <label class="field">
+                  <span class="label">Store</span>
+                  <input type="text" id="deactivate-store-name" class="readonly-input" readonly disabled />
+                </label>
+                <label class="field">
+                  <span class="label">Maker Comment (required)</span>
+                  <textarea name="makerComment" id="deactivate-store-maker-comment" rows="3" placeholder="Enter reason for checker" required></textarea>
+                </label>
+                <button type="submit" class="primary-btn">Submit Request</button>
+                <p class="form-message" id="deactivate-store-message"></p>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <h2>Clarifications</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Request ID</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Maker Comment</th>
+                <th>Checker Comment</th>
+                <th>History</th>
+                <th>Maker Reply</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="clarification-rows"></tbody>
+          </table>
+          <p class="form-message" id="clarification-message"></p>
+        </div>
+      </section>
+        </main>
+      </div>
+    </div>
+
+    <script src="config.js?v=1"></script>
+    <script src="app.js?v=14"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" integrity="sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="store-onboarding.js?v=18"></script>
+  </body>
+</html>

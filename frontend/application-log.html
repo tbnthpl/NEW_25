@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Doorstep Banking - Application Log</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="app-body">
+    <div class="app-layout">
+      <aside class="sidebar" aria-label="Primary navigation">
+        <div class="sidebar-header">
+          <img src="WaveLogo.png" alt="Wave Logo" class="sidebar-logo" />
+          <div>
+            <p class="sidebar-bank">Federal Bank</p>
+            <p class="sidebar-app">Doorstep Banking</p>
+          </div>
+        </div>
+        <nav class="sidebar-nav">
+          <a class="sidebar-link" data-page="dashboard" href="dashboard.html">Dashboard</a>
+          <a class="sidebar-link" data-page="vendor-onboarding" href="vendor-onboarding.html">Vendor Onboarding</a>
+          <a class="sidebar-link" data-page="store-onboarding" href="store-onboarding.html">Store Onboarding</a>
+          <a class="sidebar-link" data-page="mapping" href="mapping.html">Store Mapping</a>
+          <a class="sidebar-link" data-page="finacle-upload" href="finacle-upload.html">Finacle Upload</a>
+          <a class="sidebar-link" data-page="vendor-upload" href="vendor-upload.html">Vendor Upload</a>
+          <a class="sidebar-link" data-page="reconciliation" href="reconciliation.html">Reconciliation</a>
+          <a class="sidebar-link" data-page="reconciliation-results" href="reconciliation-results.html">Daily Reconciliation Results</a>
+          <a class="sidebar-link" data-page="masters" href="masters.html">Master Configuration</a>
+          <a class="sidebar-link" data-page="charges" href="charges.html">Charges</a>
+          <a class="sidebar-link" data-page="reports" href="reports.html">Reports</a>
+          <a class="sidebar-link active" data-page="application-log" href="application-log.html">Application Log</a>
+          <a class="sidebar-link" data-page="approvals" href="approvals.html">Maker-Checker</a>
+          <a class="sidebar-link" data-page="admin-tools" href="admin-tools.html">Admin Tools</a>
+        </nav>
+      </aside>
+      <div class="app-main">
+        <header class="topbar">
+      <div class="brand-row">
+        <img src="FederalLogo.png" alt="Federal Bank Logo" class="brand-logo" />
+        <div class="app-title-wrap">
+          <div class="brand">Doorstep Banking</div>
+          <div class="topbar-subtitle">Federal Bank Internal System</div>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <span class="user-badge" data-user-badge></span>
+        <button class="secondary-btn" data-logout>Logout</button>
+      </div>
+    </header>
+
+    <main class="page page-wide">
+      <section class="recon-card" aria-labelledby="log-title">
+        <header class="card-header">
+          <p class="brand">Doorstep Banking</p>
+          <h1 id="log-title">Application Log</h1>
+          <p class="subtitle">Complete audit trail of all application processes. Read-only; logs cannot be deleted.</p>
+        </header>
+
+        <div class="log-type-toggle">
+          <button class="secondary-btn log-type-btn active" data-log-type="audit">Audit Log</button>
+          <button class="secondary-btn log-type-btn" data-log-type="api">API / Application Errors</button>
+        </div>
+
+        <div class="inline-form log-filters">
+          <label class="field log-filter-audit">
+            <span class="label">Entity Type</span>
+            <select id="log-entity-type">
+              <option value="">All</option>
+            </select>
+          </label>
+          <label class="field log-filter-api hidden">
+            <span class="label">Status Code</span>
+            <select id="log-status-code">
+              <option value="">All</option>
+              <option value="400">400 Bad Request</option>
+              <option value="401">401 Unauthorized</option>
+              <option value="403">403 Forbidden</option>
+              <option value="404">404 Not Found</option>
+              <option value="409">409 Conflict</option>
+              <option value="422">422 Validation Error</option>
+              <option value="500">500 Server Error</option>
+            </select>
+          </label>
+          <label class="field">
+            <span class="label">From Date</span>
+            <input type="date" id="log-from-date" />
+          </label>
+          <label class="field">
+            <span class="label">To Date</span>
+            <input type="date" id="log-to-date" />
+          </label>
+          <label class="field">
+            <span class="label">Limit</span>
+            <select id="log-limit">
+              <option value="100">100</option>
+              <option value="250">250</option>
+              <option value="500" selected>500</option>
+              <option value="1000">1000</option>
+            </select>
+          </label>
+          <button class="primary-btn" id="load-logs">Load Logs</button>
+          <button class="secondary-btn" id="download-logs">Download Excel</button>
+          <button class="secondary-btn" id="download-excel">Download full (formatted)</button>
+        </div>
+        <p id="log-message" class="form-message" role="status" aria-live="polite"></p>
+
+        <div class="log-pagination" id="log-pagination"></div>
+        <div class="table-wrapper log-table-wrapper" id="log-table-wrapper" aria-live="polite"></div>
+      </section>
+        </main>
+      </div>
+    </div>
+
+    <script src="config.js?v=1"></script>
+    <script src="app.js?v=14"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" integrity="sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="application-log.js?v=2"></script>
+  </body>
+</html>

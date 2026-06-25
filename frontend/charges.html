@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Doorstep Banking - Charges</title>
+    <link rel="stylesheet" href="styles.css?v=5" />
+  </head>
+  <body class="app-body">
+    <div class="app-layout">
+      <aside class="sidebar" aria-label="Primary navigation">
+        <div class="sidebar-header">
+          <img src="WaveLogo.png" alt="Wave Logo" class="sidebar-logo" />
+          <div>
+            <p class="sidebar-bank">Federal Bank</p>
+            <p class="sidebar-app">Doorstep Banking</p>
+          </div>
+        </div>
+        <nav class="sidebar-nav">
+          <a class="sidebar-link" data-page="dashboard" href="dashboard.html">Dashboard</a>
+          <a class="sidebar-link" data-page="vendor-onboarding" href="vendor-onboarding.html">Vendor Onboarding</a>
+          <a class="sidebar-link" data-page="store-onboarding" href="store-onboarding.html">Store Onboarding</a>
+          <a class="sidebar-link" data-page="mapping" href="mapping.html">Store Mapping</a>
+          <a class="sidebar-link" data-page="finacle-upload" href="finacle-upload.html">Finacle Upload</a>
+          <a class="sidebar-link" data-page="vendor-upload" href="vendor-upload.html">Vendor Upload</a>
+          <a class="sidebar-link" data-page="reconciliation" href="reconciliation.html">Reconciliation</a>
+          <a class="sidebar-link" data-page="reconciliation-results" href="reconciliation-results.html">Daily Reconciliation Results</a>
+          <a class="sidebar-link" data-page="masters" href="masters.html">Master Configuration</a>
+          <a class="sidebar-link active" data-page="charges" href="charges.html">Charges</a>
+          <a class="sidebar-link" data-page="reports" href="reports.html">Reports</a>
+          <a class="sidebar-link" data-page="application-log" href="application-log.html">Application Log</a>
+          <a class="sidebar-link" data-page="approvals" href="approvals.html">Maker-Checker</a>
+          <a class="sidebar-link" data-page="admin-tools" href="admin-tools.html">Admin Tools</a>
+        </nav>
+      </aside>
+      <div class="app-main">
+        <header class="topbar">
+      <div class="brand-row">
+        <img src="FederalLogo.png" alt="Federal Bank Logo" class="brand-logo" />
+        <div class="app-title-wrap">
+          <div class="brand">Doorstep Banking</div>
+          <div class="topbar-subtitle">Federal Bank Internal System</div>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <span class="user-badge" data-user-badge></span>
+        <button class="secondary-btn" data-logout>Logout</button>
+      </div>
+    </header>
+
+    <main class="page page-wide">
+      <section class="recon-card">
+        <h1>Charges</h1>
+
+        <div class="charge-tabs">
+          <button class="secondary-btn charge-tab active" data-tab="vendor">Vendor Charges</button>
+          <button class="secondary-btn charge-tab" data-tab="customer">Store charges</button>
+        </div>
+
+        <!-- ========== VENDOR CHARGES SECTION ========== -->
+        <div class="charge-panel active" id="vendor-panel">
+          <h2>Vendor Charges</h2>
+
+          <div class="charge-subsection">
+            <h3>Compute & View</h3>
+            <div class="charge-controls">
+              <label class="field">
+                <span class="label">Vendor</span>
+                <select id="charge-view-vendor">
+                  <option value="">All vendors</option>
+                </select>
+              </label>
+              <label class="field">
+                <span class="label">Store</span>
+                <select id="charge-view-store-vendor" title="Pick a store to see the per-store breakdown that makes up each vendor's bill.">
+                  <option value="">All stores</option>
+                </select>
+              </label>
+              <label class="field">
+                <span class="label">From Date</span>
+                <input type="date" id="charge-date-from-vendor" />
+              </label>
+              <label class="field">
+                <span class="label">To Date</span>
+                <input type="date" id="charge-date-to-vendor" />
+              </label>
+              <button class="primary-btn charges-compact-btn" id="compute-vendor-btn">Go</button>
+              <button class="secondary-btn charges-compact-btn" id="download-vendor-charges" title="Download report">
+                <span aria-hidden="true">⬇</span>
+              </button>
+            </div>
+            <p class="form-message" id="charge-vendor-message"></p>
+            <div class="table-wrapper charges-table-scroll">
+              <table class="charges-data-table" id="vendor-charge-table">
+                <thead id="vendor-charge-thead">
+                  <tr>
+                    <th>Vendor</th>
+                    <th>From Date</th>
+                    <th>To Date</th>
+                    <th>Beat stores</th>
+                    <th>Call pickups</th>
+                    <th>Total remittance (₹)</th>
+                    <th>Base (₹)</th>
+                    <th>Enhancement (₹)</th>
+                    <th>Tax (₹)</th>
+                    <th>Total (₹)</th>
+                    <th>Computed By</th>
+                  </tr>
+                </thead>
+                <tbody id="vendor-charge-rows"></tbody>
+              </table>
+            </div>
+            <p class="form-message" id="vendor-charge-message"></p>
+          </div>
+        </div>
+
+        <!-- ========== CUSTOMER CHARGES SECTION ========== -->
+        <div class="charge-panel hidden" id="customer-panel">
+          <h2>Bank store charges</h2>
+
+          <div class="charge-subsection">
+            <h3>Compute & View</h3>
+            <div class="charge-controls">
+              <label class="field">
+                <span class="label">Store</span>
+                <select id="charge-view-store">
+                  <option value="">All stores</option>
+                </select>
+              </label>
+              <label class="field">
+                <span class="label">From Date</span>
+                <input type="date" id="charge-date-from-customer" />
+              </label>
+              <label class="field">
+                <span class="label">To Date</span>
+                <input type="date" id="charge-date-to-customer" />
+              </label>
+              <button class="primary-btn charges-compact-btn" id="compute-customer-btn">Go</button>
+              <button class="secondary-btn charges-compact-btn" id="download-customer-charges" title="Download report">
+                <span aria-hidden="true">⬇</span>
+              </button>
+            </div>
+            <p class="form-message" id="charge-customer-message"></p>
+            <div class="table-wrapper charges-table-scroll">
+              <table class="charges-data-table" id="customer-charge-table">
+                <thead>
+                  <tr>
+                    <th>Store ID</th>
+                    <th>Store code</th>
+                    <th>Store name</th>
+                    <th>Vendor name</th>
+                    <th title="First recon date included in this saved compute (or full month start if legacy row)">Period from</th>
+                    <th title="Last recon date included in this saved compute (or full month end if legacy row)">Period to</th>
+                    <th title="Calendar days where final recon amount exceeded this store’s daily pickup limit.">Days &gt; limit</th>
+                    <th>Remittance (₹)</th>
+                    <th>Base (₹)</th>
+                    <th>Enhancement (₹)</th>
+                    <th title="Rupees waived this month (includes % waiver plus extra from cap headroom when waiver cap is set).">Store waiver (₹)</th>
+                    <th>Net (₹)</th>
+                    <th>Total (₹)</th>
+                    <th>Computed By</th>
+                    <th>Charge calc date</th>
+                  </tr>
+                </thead>
+                <tbody id="customer-charge-rows"></tbody>
+              </table>
+            </div>
+            <p class="form-message" id="customer-charge-message"></p>
+          </div>
+
+          <div class="charge-subsection">
+            <h3>Store charge configuration</h3>
+            <div class="config-grid">
+              <div class="config-block">
+                <h4>Excess above daily pickup limit</h4>
+                <div class="customer-excess-active-section">
+                  <h5 class="customer-excess-active-heading">Active configuration</h5>
+                  <div class="table-wrapper">
+                    <table class="customer-excess-active-table">
+                      <thead>
+                        <tr>
+                          <th>Setting</th>
+                          <th>Amount (₹)</th>
+                          <th>Effective from</th>
+                          <th>Effective to</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody id="customer-excess-active-rows"></tbody>
+                    </table>
+                  </div>
+                  <p class="subtitle subtitle-small customer-excess-active-footnote" id="customer-excess-active-footnote" hidden></p>
+                </div>
+                <h5 class="customer-excess-form-heading">Submit change for approval</h5>
+                <form id="customer-excess-charge-form" class="card-form">
+                  <label class="field">
+                    <span class="label">Excess amount per step (₹)</span>
+                    <input
+                      type="number"
+                      name="excessStepAmount"
+                      id="customer-excess-step-amount"
+                      min="0"
+                      step="1"
+                      placeholder="e.g. 50000"
+                      required
+                    />
+                  </label>
+                  <label class="field">
+                    <span class="label">Charge per step (₹)</span>
+                    <input
+                      type="number"
+                      name="chargePerStep"
+                      id="customer-excess-charge-per-step"
+                      min="0"
+                      step="0.01"
+                      placeholder="e.g. 60"
+                      required
+                    />
+                  </label>
+                  <label class="field">
+                    <span class="label">Effective from</span>
+                    <input type="date" name="effectiveFrom" id="customer-excess-effective-from" required />
+                  </label>
+                  <button class="primary-btn" type="submit">Submit for approval</button>
+                  <p class="form-message" id="customer-excess-charge-message"></p>
+                </form>
+              </div>
+              <div class="config-block hidden" id="charge-config-global-block">
+                <h4>Charge Config (Global)</h4>
+                <form id="charge-config-form" class="card-form">
+                  <input type="text" name="configCode" placeholder="Config code" required />
+                  <input type="text" name="configName" placeholder="Config name" required />
+                  <input type="number" step="0.0001" name="valueNumber" placeholder="Value number" />
+                  <input type="text" name="valueText" placeholder="Value text" />
+                  <input type="date" name="effectiveFrom" required />
+                  <button class="primary-btn" type="submit">Submit Request</button>
+                  <p class="form-message" id="charge-config-message"></p>
+                </form>
+                <p class="subtitle subtitle-small">
+                  Codes: ENHANCEMENT_THRESHOLD_AMOUNT, ENHANCEMENT_CHARGE_AMOUNT, GST_ENABLED (Y/N), GST_RATE_PERCENT.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-wrapper mt20" data-clarifications-maker-admin>
+            <h2>Clarifications (Charges)</h2>
+            <p class="subtitle subtitle-small">
+              Checker raised a clarification on a charge-related request you submitted. Reply below to resubmit for approval.
+            </p>
+            <table>
+              <thead>
+                <tr>
+                  <th>Request ID</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                  <th>Maker Comment</th>
+                  <th>Checker Comment</th>
+                  <th>History</th>
+                  <th>Maker Reply</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="charge-clarification-rows"></tbody>
+            </table>
+            <p class="form-message" id="charge-clarification-message"></p>
+          </div>
+        </div>
+      </section>
+        </main>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" integrity="sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="config.js?v=1"></script>
+    <script src="app.js?v=14"></script>
+    <script src="charges.js?v=33"></script>
+  </body>
+</html>

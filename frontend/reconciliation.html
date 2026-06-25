@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Doorstep Banking - Reconciliation</title>
+    <link rel="stylesheet" href="styles.css?v=4" />
+  </head>
+  <body class="app-body">
+    <div class="app-layout">
+      <aside class="sidebar" aria-label="Primary navigation">
+        <div class="sidebar-header">
+          <img src="WaveLogo.png" alt="Wave Logo" class="sidebar-logo" />
+          <div>
+            <p class="sidebar-bank">Federal Bank</p>
+            <p class="sidebar-app">Doorstep Banking</p>
+          </div>
+        </div>
+        <nav class="sidebar-nav">
+          <a class="sidebar-link" data-page="dashboard" href="dashboard.html">Dashboard</a>
+          <a class="sidebar-link" data-page="vendor-onboarding" href="vendor-onboarding.html">Vendor Onboarding</a>
+          <a class="sidebar-link" data-page="store-onboarding" href="store-onboarding.html">Store Onboarding</a>
+          <a class="sidebar-link" data-page="mapping" href="mapping.html">Store Mapping</a>
+          <a class="sidebar-link" data-page="finacle-upload" href="finacle-upload.html">Finacle Upload</a>
+          <a class="sidebar-link" data-page="vendor-upload" href="vendor-upload.html">Vendor Upload</a>
+          <a class="sidebar-link active" data-page="reconciliation" href="reconciliation.html">Reconciliation</a>
+          <a class="sidebar-link" data-page="reconciliation-results" href="reconciliation-results.html">Daily Reconciliation Results</a>
+          <a class="sidebar-link" data-page="masters" href="masters.html">Master Configuration</a>
+          <a class="sidebar-link" data-page="charges" href="charges.html">Charges</a>
+          <a class="sidebar-link" data-page="reports" href="reports.html">Reports</a>
+          <a class="sidebar-link" data-page="application-log" href="application-log.html">Application Log</a>
+          <a class="sidebar-link" data-page="approvals" href="approvals.html">Maker-Checker</a>
+          <a class="sidebar-link" data-page="admin-tools" href="admin-tools.html">Admin Tools</a>
+        </nav>
+      </aside>
+      <div class="app-main">
+        <header class="topbar">
+      <div class="brand-row">
+        <img src="FederalLogo.png" alt="Federal Bank Logo" class="brand-logo" />
+        <div class="app-title-wrap">
+          <div class="brand">Doorstep Banking</div>
+          <div class="topbar-subtitle">Federal Bank Internal System</div>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <span class="user-badge" data-user-badge></span>
+        <button class="secondary-btn" data-logout>Logout</button>
+      </div>
+    </header>
+
+    <main class="page page-wide">
+      <section class="recon-card" aria-labelledby="recon-title">
+        <header class="card-header">
+          <p class="brand">Doorstep Banking</p>
+          <h1 id="recon-title">Daily Reconciliation</h1>
+        </header>
+
+        <label class="field">
+          <span class="label">MIS Date</span>
+          <input type="date" id="recon-mis-date" required />
+        </label>
+        <label class="field">
+          <span class="label">Vendor (optional)</span>
+          <select id="recon-vendor-filter" aria-label="Filter reconciliation by vendor">
+            <option value="">All vendors</option>
+          </select>
+        </label>
+        <div class="inline-actions">
+          <button class="primary-btn" id="run-recon">Run Reconciliation</button>
+          <button class="primary-btn" id="save-recon" disabled hidden>Save Selected</button>
+          <button class="secondary-btn" id="download-recon" disabled hidden>Download Report</button>
+        </div>
+        <div class="upload-progress" id="recon-progress" hidden aria-live="polite">
+          <div class="upload-progress-label" id="recon-progress-label">Running reconciliation...</div>
+          <div class="upload-progress-bar">
+            <div class="upload-progress-fill" id="recon-progress-fill"></div>
+          </div>
+          <div class="upload-progress-percent" id="recon-progress-percent">0%</div>
+        </div>
+        <p id="recon-message" class="form-message" role="status" aria-live="polite"></p>
+
+        <div class="table-wrapper" id="recon-table-wrapper" aria-live="polite"></div>
+      </section>
+        </main>
+      </div>
+    </div>
+
+    <script src="config.js?v=1"></script>
+    <script src="app.js?v=14"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" integrity="sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="reconciliation.js?v=16"></script>
+  </body>
+</html>

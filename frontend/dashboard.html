@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Doorstep Banking - Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="app-body">
+    <div class="app-layout">
+      <aside class="sidebar" aria-label="Primary navigation">
+        <div class="sidebar-header">
+          <img src="WaveLogo.png" alt="Wave Logo" class="sidebar-logo" />
+          <div>
+            <p class="sidebar-bank">Federal Bank</p>
+            <p class="sidebar-app">Doorstep Banking</p>
+          </div>
+        </div>
+        <nav class="sidebar-nav">
+          <a class="sidebar-link active" data-page="dashboard" href="dashboard.html">Dashboard</a>
+          <a class="sidebar-link" data-page="vendor-onboarding" href="vendor-onboarding.html">Vendor Onboarding</a>
+          <a class="sidebar-link" data-page="store-onboarding" href="store-onboarding.html">Store Onboarding</a>
+          <a class="sidebar-link" data-page="mapping" href="mapping.html">Store Mapping</a>
+          <a class="sidebar-link" data-page="finacle-upload" href="finacle-upload.html">Finacle Upload</a>
+          <a class="sidebar-link" data-page="vendor-upload" href="vendor-upload.html">Vendor Upload</a>
+          <a class="sidebar-link" data-page="reconciliation" href="reconciliation.html">Reconciliation</a>
+          <a class="sidebar-link" data-page="reconciliation-results" href="reconciliation-results.html">Daily Reconciliation Results</a>
+          <a class="sidebar-link" data-page="masters" href="masters.html">Master Configuration</a>
+          <a class="sidebar-link" data-page="charges" href="charges.html">Charges</a>
+          <a class="sidebar-link" data-page="reports" href="reports.html">Reports</a>
+          <a class="sidebar-link" data-page="application-log" href="application-log.html">Application Log</a>
+          <a class="sidebar-link" data-page="approvals" href="approvals.html">Maker-Checker</a>
+          <a class="sidebar-link" data-page="admin-tools" href="admin-tools.html">Admin Tools</a>
+        </nav>
+      </aside>
+      <div class="app-main">
+        <header class="topbar">
+      <div class="brand-row">
+        <img src="FederalLogo.png" alt="Federal Bank Logo" class="brand-logo" />
+        <div class="app-title-wrap">
+          <div class="brand">Doorstep Banking</div>
+          <div class="topbar-subtitle">Federal Bank Internal System</div>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <span class="user-badge" data-user-badge></span>
+        <button class="secondary-btn" data-logout>Logout</button>
+      </div>
+    </header>
+
+    <main class="page page-wide">
+<section class="recon-card">
+        <div class="dash-header">
+          <h1>Dashboard</h1>
+          <span class="dash-asof" id="dash-asof"></span>
+        </div>
+
+        <p class="form-message" id="dash-message">Loading dashboard…</p>
+
+        <div class="dash-panel dash-status-panel">
+          <h2 class="dash-panel-title">Check request status</h2>
+          <form class="dash-status-form" id="dash-status-form">
+            <input type="text" id="dash-status-input" placeholder="Enter Request ID (e.g. DSBRID1000)" autocomplete="off" />
+            <button type="submit" class="primary-btn">Check status</button>
+          </form>
+          <div class="dash-status-result" id="dash-status-result"></div>
+        </div>
+
+        <div class="dash-kpis" id="dash-kpis"></div>
+
+        <h2 class="dash-section-title">Quick access</h2>
+
+        <div class="card-grid">
+          <a class="nav-card" data-page="vendor-onboarding" href="vendor-onboarding.html">
+            <span class="tile-icon" aria-hidden="true">👤</span>
+            <span>Vendor Onboarding</span>
+          </a>
+          <a class="nav-card" data-page="store-onboarding" href="store-onboarding.html">
+            <span class="tile-icon" aria-hidden="true">🏦</span>
+            <span>Store Onboarding</span>
+          </a>
+          <a class="nav-card" data-page="mapping" href="mapping.html">
+            <span class="tile-icon" aria-hidden="true">🔗</span>
+            <span>Store Mapping</span>
+          </a>
+          <a class="nav-card" data-page="finacle-upload" href="finacle-upload.html">
+            <span class="tile-icon" aria-hidden="true">⬆️</span>
+            <span>Finacle Upload</span>
+          </a>
+          <a class="nav-card" data-page="vendor-upload" href="vendor-upload.html">
+            <span class="tile-icon" aria-hidden="true">📄</span>
+            <span>Vendor Upload</span>
+          </a>
+          <a class="nav-card" data-page="reconciliation" href="reconciliation.html">
+            <span class="tile-icon" aria-hidden="true">⚖️</span>
+            <span>Reconciliation</span>
+          </a>
+          <a class="nav-card" data-page="reconciliation-results" href="reconciliation-results.html">
+            <span class="tile-icon" aria-hidden="true">📊</span>
+            <span>Daily Reconciliation Results</span>
+          </a>
+          <a class="nav-card" data-page="approvals" href="approvals.html">
+            <span class="tile-icon" aria-hidden="true">✅</span>
+            <span>Maker-Checker</span>
+          </a>
+          <a class="nav-card" data-page="masters" href="masters.html">
+            <span class="tile-icon" aria-hidden="true">🧩</span>
+            <span>Master Configuration</span>
+          </a>
+          <a class="nav-card" data-page="charges" href="charges.html">
+            <span class="tile-icon" aria-hidden="true">💳</span>
+            <span>Charges</span>
+          </a>
+          <a class="nav-card" data-page="reports" href="reports.html">
+            <span class="tile-icon" aria-hidden="true">📁</span>
+            <span>Reports</span>
+          </a>
+          <a class="nav-card" data-page="admin-tools" href="admin-tools.html">
+            <span class="tile-icon" aria-hidden="true">🛠️</span>
+            <span>Admin Tools</span>
+          </a>
+        </div>
+      </section>
+        </main>
+      </div>
+    </div>
+
+    <script src="config.js?v=1"></script>
+    <script src="app.js?v=14"></script>
+    <script src="dashboard.js?v=14"></script>
+  </body>
+</html>

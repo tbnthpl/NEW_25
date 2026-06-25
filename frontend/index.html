@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Cache-Control" content="no-store" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Doorstep Banking - Login</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <section class="login-card" aria-labelledby="login-title">
+        <header class="card-header">
+          <img
+            src="FederalLogo.png"
+            alt="Federal Bank Logo"
+            class="login-branding"
+          />
+          <br />
+          <p class="brand login-brand-title">Doorstep Banking</p>
+        </header>
+
+        <form id="login-form" class="card-form" novalidate>
+          <label class="field">
+            <span class="label">Employee ID</span>
+            <input
+              type="text"
+              name="employeeId"
+              autocomplete="username"
+              placeholder="Enter your ID"
+              required
+            />
+          </label>
+
+          <label class="field">
+            <span class="label">Password</span>
+            <span class="input-with-action">
+              <input
+                type="password"
+                name="password"
+                id="password-input"
+                autocomplete="current-password"
+                placeholder="Enter your password"
+                required
+              />
+              <button type="button" class="icon-btn" id="toggle-password">
+                Show
+              </button>
+            </span>
+          </label>
+
+          <button type="submit" class="primary-btn">Sign in</button>
+        </form>
+
+        <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
+      </section>
+    </main>
+
+    <script src="config.js?v=1"></script>
+    <script src="script.js?v=3"></script>
+  </body>
+</html>

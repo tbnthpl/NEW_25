@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Doorstep Banking - Finacle Upload</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="app-body">
+    <div class="app-layout">
+      <aside class="sidebar" aria-label="Primary navigation">
+        <div class="sidebar-header">
+          <img src="WaveLogo.png" alt="Wave Logo" class="sidebar-logo" />
+          <div>
+            <p class="sidebar-bank">Federal Bank</p>
+            <p class="sidebar-app">Doorstep Banking</p>
+          </div>
+        </div>
+        <nav class="sidebar-nav">
+          <a class="sidebar-link" data-page="dashboard" href="dashboard.html">Dashboard</a>
+          <a class="sidebar-link" data-page="vendor-onboarding" href="vendor-onboarding.html">Vendor Onboarding</a>
+          <a class="sidebar-link" data-page="store-onboarding" href="store-onboarding.html">Store Onboarding</a>
+          <a class="sidebar-link" data-page="mapping" href="mapping.html">Store Mapping</a>
+          <a class="sidebar-link active" data-page="finacle-upload" href="finacle-upload.html">Finacle Upload</a>
+          <a class="sidebar-link" data-page="vendor-upload" href="vendor-upload.html">Vendor Upload</a>
+          <a class="sidebar-link" data-page="reconciliation" href="reconciliation.html">Reconciliation</a>
+          <a class="sidebar-link" data-page="reconciliation-results" href="reconciliation-results.html">Daily Reconciliation Results</a>
+          <a class="sidebar-link" data-page="masters" href="masters.html">Master Configuration</a>
+          <a class="sidebar-link" data-page="charges" href="charges.html">Charges</a>
+          <a class="sidebar-link" data-page="reports" href="reports.html">Reports</a>
+          <a class="sidebar-link" data-page="application-log" href="application-log.html">Application Log</a>
+          <a class="sidebar-link" data-page="approvals" href="approvals.html">Maker-Checker</a>
+          <a class="sidebar-link" data-page="admin-tools" href="admin-tools.html">Admin Tools</a>
+        </nav>
+      </aside>
+      <div class="app-main">
+        <header class="topbar">
+      <div class="brand-row">
+        <img src="FederalLogo.png" alt="Federal Bank Logo" class="brand-logo" />
+        <div class="app-title-wrap">
+          <div class="brand">Doorstep Banking</div>
+          <div class="topbar-subtitle">Federal Bank Internal System</div>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <span class="user-badge" data-user-badge></span>
+        <button class="secondary-btn" data-logout>Logout</button>
+      </div>
+    </header>
+
+    <main class="page page-wide">
+      <section class="upload-card" aria-labelledby="finacle-title">
+        <header class="card-header">
+          <h1 id="finacle-title">Finacle MIS Upload</h1>
+        </header>
+
+        <form id="finacle-upload-form" class="card-form" novalidate data-checker-hide>
+          <label class="field">
+            <span class="label">MIS Date (T+1)</span>
+            <input type="date" name="misDate" required />
+          </label>
+          <label class="field">
+            <span class="label">Finacle MIS File (Excel)</span>
+            <input type="file" name="finacleMis" accept=".xlsx,.xls" required />
+          </label>
+          <div class="button-row finacle-actions-row">
+            <button type="submit" class="primary-btn">Upload Finacle MIS</button>
+            <button type="button" class="secondary-btn" id="finacle-validate-btn">Validate Stores</button>
+          </div>
+          <div class="upload-progress" id="finacle-upload-progress" hidden aria-live="polite">
+            <div class="upload-progress-label" id="finacle-progress-label">Uploading...</div>
+            <div class="upload-progress-bar">
+              <div class="upload-progress-fill" id="finacle-progress-fill"></div>
+            </div>
+            <div class="upload-progress-percent" id="finacle-progress-percent">0%</div>
+          </div>
+          <p class="form-message" id="finacle-message" role="status" aria-live="polite"></p>
+        </form>
+
+        <section class="table-wrapper preview" aria-labelledby="finacle-preview-title">
+          <h2 id="finacle-preview-title">Preview (full sheet)</h2>
+          <p class="preview-scroll-hint">Scroll left or right to see all columns.</p>
+          <p class="form-message" id="finacle-preview-message"></p>
+          <table class="preview-table">
+            <thead id="finacle-preview-head"></thead>
+            <tbody id="finacle-preview-body"></tbody>
+          </table>
+        </section>
+
+        <section class="table-wrapper finacle-history-card" aria-labelledby="finacle-history-title">
+          <h2 id="finacle-history-title">Previous Uploads</h2>
+          <p class="subtitle">Preview, download, or delete previous uploads.</p>
+          <div class="filter-row finacle-history-filter-row">
+            <label class="field">
+              <span class="label">From Date</span>
+              <input type="date" id="finacle-filter-from" />
+            </label>
+            <label class="field">
+              <span class="label">To Date</span>
+              <input type="date" id="finacle-filter-to" />
+            </label>
+            <button type="button" class="secondary-btn" id="finacle-filter-apply">Apply</button>
+            <button type="button" class="secondary-btn" id="finacle-filter-clear">Clear</button>
+          </div>
+          <table class="finacle-history-table">
+            <thead>
+              <tr>
+                <th>Batch ID</th>
+                <th>MIS Date</th>
+                <th>File Name</th>
+                <th>Uploaded By</th>
+                <th>Uploaded At</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="finacle-history-rows"></tbody>
+          </table>
+          <p class="form-message" id="finacle-history-message"></p>
+        </section>
+      </section>
+
+        <div class="approval-modal" id="finacle-skip-modal" role="dialog" aria-labelledby="finacle-skip-title" aria-modal="true" hidden>
+          <div class="approval-modal-backdrop"></div>
+          <div class="approval-modal-content">
+            <div class="approval-modal-header">
+              <h2 id="finacle-skip-title">Some stores are not onboarded</h2>
+              <button type="button" class="approval-modal-close" aria-label="Close">&times;</button>
+            </div>
+            <div class="approval-modal-body">
+              <p class="subtitle modal-note">
+                The following bank store codes were not found in Store Onboarding for the selected MIS date.
+                You can either cancel and onboard them first, or skip those rows and upload the rest.
+                Skipped rows are saved in the invalid-records list for audit and can be reuploaded later.
+              </p>
+              <div class="skip-store-summary">
+                <span><strong id="finacle-skip-count">0</strong> store code(s) will be skipped:</span>
+              </div>
+              <ul class="skip-store-list" id="finacle-skip-list"></ul>
+              <div class="button-row">
+                <button type="button" class="secondary-btn" data-skip-cancel>Cancel</button>
+                <button type="button" class="primary-btn" data-skip-confirm>Skip &amp; Upload</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        </main>
+      </div>
+    </div>
+
+    <script src="config.js?v=1"></script>
+    <script src="app.js?v=14"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" integrity="sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="finacle-upload.js?v=11"></script>
+  </body>
+</html>

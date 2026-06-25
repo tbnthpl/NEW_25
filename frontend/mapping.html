@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Doorstep Banking - Store Mapping</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="app-body">
+    <div class="app-layout">
+      <aside class="sidebar" aria-label="Primary navigation">
+        <div class="sidebar-header">
+          <img src="WaveLogo.png" alt="Wave Logo" class="sidebar-logo" />
+          <div>
+            <p class="sidebar-bank">Federal Bank</p>
+            <p class="sidebar-app">Doorstep Banking</p>
+          </div>
+        </div>
+        <nav class="sidebar-nav">
+          <a class="sidebar-link" data-page="dashboard" href="dashboard.html">Dashboard</a>
+          <a class="sidebar-link" data-page="vendor-onboarding" href="vendor-onboarding.html">Vendor Onboarding</a>
+          <a class="sidebar-link" data-page="store-onboarding" href="store-onboarding.html">Store Onboarding</a>
+          <a class="sidebar-link active" data-page="mapping" href="mapping.html">Store Mapping</a>
+          <a class="sidebar-link" data-page="finacle-upload" href="finacle-upload.html">Finacle Upload</a>
+          <a class="sidebar-link" data-page="vendor-upload" href="vendor-upload.html">Vendor Upload</a>
+          <a class="sidebar-link" data-page="reconciliation" href="reconciliation.html">Reconciliation</a>
+          <a class="sidebar-link" data-page="reconciliation-results" href="reconciliation-results.html">Daily Reconciliation Results</a>
+          <a class="sidebar-link" data-page="masters" href="masters.html">Master Configuration</a>
+          <a class="sidebar-link" data-page="charges" href="charges.html">Charges</a>
+          <a class="sidebar-link" data-page="reports" href="reports.html">Reports</a>
+          <a class="sidebar-link" data-page="application-log" href="application-log.html">Application Log</a>
+          <a class="sidebar-link" data-page="approvals" href="approvals.html">Maker-Checker</a>
+          <a class="sidebar-link" data-page="admin-tools" href="admin-tools.html">Admin Tools</a>
+        </nav>
+      </aside>
+      <div class="app-main">
+        <header class="topbar">
+      <div class="brand-row">
+        <img src="FederalLogo.png" alt="Federal Bank Logo" class="brand-logo" />
+        <div class="app-title-wrap">
+          <div class="brand">Doorstep Banking</div>
+          <div class="topbar-subtitle">Federal Bank Internal System</div>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <span class="user-badge" data-user-badge></span>
+        <button class="secondary-btn" data-logout>Logout</button>
+      </div>
+    </header>
+
+    <main class="page page-wide">
+      <section class="recon-card" aria-labelledby="mapping-title">
+        <header class="card-header">
+          <p class="brand">Doorstep Banking</p>
+          <h1 id="mapping-title">Store Mapping (One Time)</h1>
+          <p class="subtitle">
+            Map vendor store codes to bank store codes and customer details. Vendors and stores must be onboarded first.
+          </p>
+        </header>
+
+        <div class="bulk-upload-section" data-admin-only hidden>
+          <h3>Bulk Upload (Admin Only)</h3>
+          <p class="subtitle subtitle-small">Upload Excel (.xlsx or .xls) with columns: vendor_id or vendor_code, vendor_store_code, bank_store_code, effective_from, customer_id, customer_name, account_no</p>
+          <form id="bulk-mapping-form" class="card-form card-form-inline">
+            <input type="file" id="bulk-mapping-file" accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" required />
+            <button type="submit" class="primary-btn">Bulk Upload Mappings</button>
+            <button type="button" class="secondary-btn" id="bulk-mapping-download-template">Download template</button>
+          </form>
+          <p class="form-message" id="bulk-mapping-message"></p>
+        </div>
+
+        <form id="mapping-form" class="card-form" novalidate>
+          <div id="mapping-rows" class="mapping-rows-vertical"></div>
+
+          <div class="button-row">
+            <button type="button" class="secondary-btn" id="add-row">Add Row</button>
+            <button type="submit" class="primary-btn">Save Mapping</button>
+          </div>
+
+          <p id="mapping-message" class="form-message" role="status" aria-live="polite"></p>
+        </form>
+
+        <div class="table-wrapper">
+          <h2>Existing Mappings</h2>
+            <table>
+            <thead>
+              <tr>
+                <th>Request ID</th>
+                <th>Vendor</th>
+                <th>Bank Store Code</th>
+                <th>Vendor Store Code</th>
+                <th>Customer ID</th>
+                <th>Customer Name</th>
+                <th>Account No</th>
+                <th>Effective From</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="mapping-list-rows"></tbody>
+          </table>
+        </div>
+
+        <div class="approval-modal checker-comment-modal" id="checker-comment-modal" role="dialog" aria-labelledby="checker-comment-modal-title" aria-modal="true" hidden>
+          <div class="approval-modal-backdrop"></div>
+          <div class="approval-modal-content">
+            <div class="approval-modal-header">
+              <h2 id="checker-comment-modal-title">Checker Decision</h2>
+              <button type="button" class="approval-modal-close" aria-label="Close">&times;</button>
+            </div>
+            <div class="approval-modal-body">
+              <dl class="checker-comment-meta">
+                <dt>Decision</dt><dd id="checker-comment-decision"></dd>
+                <dt>Checker</dt><dd id="checker-comment-checker"></dd>
+                <dt>Decided on</dt><dd id="checker-comment-decided-at"></dd>
+                <dt>Maker</dt><dd id="checker-comment-maker"></dd>
+                <dt>Requested on</dt><dd id="checker-comment-created-at"></dd>
+              </dl>
+              <p class="subtitle">Comment</p>
+              <div class="checker-comment-body" id="checker-comment-text"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <h2>Clarifications</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Request ID</th>
+                <th>Status</th>
+                <th>Maker Comment</th>
+                <th>Checker Comment</th>
+                <th>History</th>
+                <th>Maker Reply</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="clarification-rows"></tbody>
+          </table>
+          <p class="form-message" id="clarification-message"></p>
+        </div>
+      </section>
+        </main>
+      </div>
+    </div>
+
+    <script src="config.js?v=1"></script>
+    <script src="app.js?v=14"></script>
+    <script src="mapping.js?v=22"></script>
+  </body>
+</html>
